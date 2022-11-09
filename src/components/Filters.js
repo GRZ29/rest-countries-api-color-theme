@@ -1,37 +1,59 @@
-import React, { useContext, useEffect } from 'react';
-import { ContextCountries } from '../Context/Context';
-import api from "../API/api";
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from "react";
+import { ContextCountries } from "../Context/Context";
 
 const Filters = () => {
+  const { state, dispatch } = useContext(ContextCountries);
 
-    const navigate = useNavigate();
+  const { loading, options } = state;
 
-    const {state,dispatch} = useContext(ContextCountries)
+  const handleChangeFilter = (e) => {
+    const { value } = e.target;
+    dispatch({ type: "searchName", payload: value });
+  };
 
-    const test = () =>{
-        console.log(state)
-    }
+  const handleChangeDrop = (e) => {
+    console.log(e)
+    dispatch({ type: "searchDrop", payload: e });
+  }
 
-    const testing = async () => {
-        let countriesPromise = api.countriesAll();
-    
-        let countries = await countriesPromise;
-    
-        dispatch({ type: "getAll", payload: countries });
-    };
+  if (loading) {
+    <div>loading</div>;
+  }
 
-    useEffect(()=>{
-        testing();
-    },[])
-
-    return (
-        <>
-            asdasdsa:
-            <button onClick={()=>test()}>console</button>
-            <button onClick={()=>navigate("/api-countries/je")}>ssss</button>
-        </>
-    );
+  return (
+    <div className="mt-2 d-flex navbar">
+      <div className="form-floating">
+        <input
+          type="email"
+          className="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+          onChange={handleChangeFilter}
+          style={{ width: 310 + "px" }}
+        />
+        <label htmlFor="floatingInput">Search</label>
+      </div>
+      <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Filter by Region
+        </button>
+        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><button className="dropdown-item" onClick={()=>handleChangeDrop(`All`)}>All</button></li>
+          {options.map((item, index) => (
+            <li key={index}>
+              <button className="dropdown-item" onClick={()=>handleChangeDrop(`${item.region}`)}>{item.region}</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 };
 
 export default Filters;

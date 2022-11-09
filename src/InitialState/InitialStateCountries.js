@@ -4,4 +4,7 @@ export const initialStateCountries = {
     searchData: [],
     searchDrop: [],
     loading: true,
+    text:'',
+    options:[],
+    optionSelected:''
 };

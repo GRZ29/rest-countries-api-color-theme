@@ -1,6 +1,7 @@
 import React, {  useContext, useEffect, useReducer } from "react";
 import api from "../API/api";
 import { ContextCountries, ContextTheme } from "../Context/Context";
+import Filters from "./Filters";
 
 const Countries = () => {
 
@@ -16,6 +17,7 @@ const Countries = () => {
     let countries = await countriesPromise;
 
     dispatch({ type: "getAll", payload: countries });
+    dispatch({ type: "setOptions"});
   };
 
   useEffect(() => {
@@ -29,10 +31,11 @@ const Countries = () => {
 
   return (
     <div className="container">
+      <Filters/>
       <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
         {/* {data.map(item=>{console.log(item)})} */}
         {data?.map((item, index) => (
-          <div key={index} className={`col p-2 h-100 `}>
+          <div key={index} className={`col h-100 mb-2`}>
             <div className={`card w-100 ${color.isDark? 'card-Dark' : 'card-White'}`} >
               <div className="m-0 p-0 w-100 " style={{height:175+'px'}}>
                 <img src={item?.flag} className="card-img-top img-fluid" alt="..." style={{height:175+'px'}}/>
