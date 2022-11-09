@@ -1,8 +1,7 @@
 export const initialStateCountries = {
     allData: [],
     data:[],
-    searchData: [],
-    searchDrop: [],
+    dataSelected:[],
     loading: true,
     text:'',
     options:[],

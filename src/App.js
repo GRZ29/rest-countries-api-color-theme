@@ -3,14 +3,13 @@ import "./assets/sass/styles.scss";
 import Countries from "./components/Countries";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Routes/Layout";
-//import Filters from "./components/Filters";
 import { ContextCountries, ContextTheme } from "./Context/Context";
 import ReducerCountries from "./Reducer/ReducerCountries";
 import { initialStateCountries } from "./InitialState/InitialStateCountries";
 import React, { useReducer } from "react";
 import { initialStateTheme } from "./InitialState/InitialStateTheme";
 import ReducerTheme from "./Reducer/ReducerTheme";
-//import Header from "./components/Header";
+import Details from './components/Details';
 
 function App() {
   const [state, dispatch] = useReducer(ReducerCountries, initialStateCountries);
@@ -28,9 +27,7 @@ function App() {
               />
               <Route path="/api-countries" element={<Layout />}>
                 <Route index element={<Countries />} />
-                {/* <Route path="consumidor" element={<Filters />} />
-            <Route path="je" element={<Header />} /> */}
-                <Route path=":id" element={<Countries />} />
+                <Route path=":id" element={<Details />} />
               </Route>
             </Routes>
           </BrowserRouter>

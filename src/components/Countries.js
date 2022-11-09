@@ -2,14 +2,21 @@ import React, {  useContext, useEffect, useReducer } from "react";
 import api from "../API/api";
 import { ContextCountries, ContextTheme } from "../Context/Context";
 import Filters from "./Filters";
+import { useNavigate } from "react-router-dom";
 
 const Countries = () => {
+
+  const navigate = useNavigate();
 
   const {state,dispatch} = useContext(ContextCountries)
 
   const {color} = useContext(ContextTheme)
 
   const {loading,data} = state;
+
+  const Navigate = (code)=>{
+    navigate(`/api-countries/${code}`)
+  }
 
   const getData = async () => {
     let countriesPromise = api.countriesAll();
@@ -21,12 +28,12 @@ const Countries = () => {
   };
 
   useEffect(() => {
+    dispatch({ type: "loadingTrue" });
     getData();
   }, []);
 
-
   if (loading) {
-    return <div>loading</div>;
+    return <div>Loading</div>;
   }
 
   return (
@@ -46,6 +53,7 @@ const Countries = () => {
                 <div className="d-flex"><h5 className="me-1">Populations: </h5><label>{item?.population}</label></div>
                 <div className="d-flex"><h5 className="me-1">Region: </h5><label>{item?.region}</label></div>
                 <div className="d-flex"><h5 className="me-1">Capital: </h5><label>{item?.capital}</label></div>
+                <div className="d-flex"><button type="button" className="btn btn-primary my-2" onClick={()=>{Navigate(item.alpha3Code)}}>See more..</button></div>
               </div>
             </div>
           </div>

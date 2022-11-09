@@ -10,6 +10,13 @@ const ReducerCountries = (state, action) => {
         loading: false,
       };
     }
+    case "getDetails": {
+      return {
+        ...state,
+        dataSelected:[action.payload],
+        loading: false,
+      };
+    }
     case "searchName": {
       return {
         ...state,
@@ -39,7 +46,6 @@ const ReducerCountries = (state, action) => {
       };
     }
     case "loadingFalse": {
-      console.log("entre");
       return {
         ...state,
         loading: false,
