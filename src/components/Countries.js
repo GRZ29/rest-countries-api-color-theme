@@ -1,0 +1,55 @@
+import React, {  useContext, useEffect, useReducer } from "react";
+import api from "../API/api";
+import { ContextCountries, ContextTheme } from "../Context/Context";
+
+const Countries = () => {
+
+  const {state,dispatch} = useContext(ContextCountries)
+
+  const {color} = useContext(ContextTheme)
+
+  const {loading,data} = state;
+
+  const getData = async () => {
+    let countriesPromise = api.countriesAll();
+
+    let countries = await countriesPromise;
+
+    dispatch({ type: "getAll", payload: countries });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+
+  if (loading) {
+    return <div>loading</div>;
+  }
+
+  return (
+    <div className="container">
+      <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
+        {/* {data.map(item=>{console.log(item)})} */}
+        {data?.map((item, index) => (
+          <div key={index} className={`col p-2 h-100 `}>
+            <div className={`card w-100 ${color.isDark? 'card-Dark' : 'card-White'}`} >
+              <div className="m-0 p-0 w-100 " style={{height:175+'px'}}>
+                <img src={item?.flag} className="card-img-top img-fluid" alt="..." style={{height:175+'px'}}/>
+              </div>
+              <div className="card-body">
+                <div className="d-flex"><h5 className="card-title">{item?.name}</h5></div>
+                <br/>
+                <div className="d-flex"><h5 className="me-1">Populations: </h5><label>{item?.population}</label></div>
+                <div className="d-flex"><h5 className="me-1">Region: </h5><label>{item?.region}</label></div>
+                <div className="d-flex"><h5 className="me-1">Capital: </h5><label>{item?.capital}</label></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Countries;
